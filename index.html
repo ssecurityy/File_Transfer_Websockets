@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+</head>
+<body>
+    <form>
+        <input type="file" id="fileInput" />
+        <button type="button" id="uploadBtn">Upload</button>
+    </form>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const ws = new WebSocket('ws://192.168.1.8:8080');
+
+        uploadBtn.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            const fileReader = new FileReader();
+
+            fileReader.onload = (event) => {
+                const data = event.target.result;
+                ws.send(data);
+            };
+
+            fileReader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
